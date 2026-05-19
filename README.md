@@ -1,38 +1,176 @@
 # Codebase Hierarchy Copier
 
-A VS Code extension that copies the structure of your project as a clean hierarchy tree.
+A lightweight and powerful VS Code extension that instantly generates and copies a clean directory tree structure of your project or any selected folder.
 
-## Features
+Perfect for:
 
-- Copy folder structure instantly
-- Ignore unnecessary files
-- Generate readable project trees
-- Useful for documentation and AI prompts
+- AI prompts (ChatGPT, Claude, Gemini)
+- Documentation
+- Project overviews
+- GitHub READMEs
+- Architecture discussions
+- Debugging and code reviews
 
-## Usage
+---
 
-1. Open Command Palette
-2. Search:
-   ```text
-   Copy Codebase Hierarchy
-   ```
-3. Paste the generated hierarchy anywhere
+# ✨ Features
 
-## Example
+## 📁 Scan Current Workspace
+
+Quickly generate the hierarchy of the currently opened VS Code workspace.
+
+## 📂 Scan Any Custom Folder
+
+Choose any folder from your computer and generate its structure instantly.
+
+## 📋 Auto Copy to Clipboard
+
+The generated hierarchy is automatically copied to your clipboard.
+
+## 🚫 Smart Ignore System
+
+Automatically ignores unnecessary folders/files like:
 
 ```text
-src/
-├── components/
-├── pages/
-└── utils/
+node_modules
+.git
+dist
+out
+.vscode
+.DS_Store
 ```
 
-## Release Notes
+## ⚡ Fast Recursive Scanning
 
-### 1.0.0
+Efficiently traverses nested folders while maintaining a clean tree structure.
 
-<<<<<<< HEAD
-Initial release.
-=======
-Initial release.
->>>>>>> 43028b49f13d7dc5051d0b21bffd2d79def8ff11
+---
+
+# 🖥 Sidebar Interface
+
+Access the extension directly from the VS Code sidebar.
+
+Buttons available:
+
+- Scan Current Active Workspace
+- Select & Scan Custom Folder
+
+---
+
+# 🚀 Command Palette Commands
+
+Open Command Palette:
+
+```text
+Ctrl + Shift + P
+```
+
+Available commands:
+
+```text
+Copy Current Workspace Hierarchy
+```
+
+```text
+Select & Copy Folder Hierarchy
+```
+
+---
+
+# 📌 Example Output
+
+```text
+my-project/
+├── src/
+│   ├── components/
+│   ├── utils/
+│   └── pages/
+├── public/
+├── package.json
+└── README.md
+```
+
+---
+
+# 📦 Installation
+
+Install directly from the VS Code Marketplace:
+
+## Marketplace
+
+https://marketplace.visualstudio.com/items?itemName=AbdullahNazirDev.codebase-hierarchy-copier
+
+---
+
+# 🛠 Usage
+
+## Method 1 — Sidebar
+
+1. Open VS Code
+2. Open the "Hierarchy Copier" sidebar panel
+3. Click:
+   - Scan Current Active Workspace
+   - OR Select & Scan Custom Folder
+4. Paste the copied hierarchy anywhere
+
+---
+
+## Method 2 — Command Palette
+
+1. Press:
+
+```text
+Ctrl + Shift + P
+```
+
+2. Run one of:
+
+```text
+Copy Current Workspace Hierarchy
+```
+
+or
+
+```text
+Select & Copy Folder Hierarchy
+```
+
+---
+
+# 🔥 Best Use Cases
+
+- Sharing project structures with AI
+- Creating architecture documentation
+- Quickly understanding unfamiliar repositories
+- Posting clean folder trees on GitHub
+- Team collaboration
+- Technical discussions
+
+---
+
+# ⚙️ Upcoming Features
+
+Planned future updates:
+
+- Preview before copy
+- Custom ignore patterns
+- Export to Markdown
+- Export to TXT file
+- Depth limit controls
+- Include/exclude extensions
+- One-click GitHub README insertion
+- Tree visualization improvements
+
+---
+
+# 🐞 Report Issues
+
+Found a bug or want a feature?
+
+Please open an issue on GitHub.
+
+---
+
+# ⭐ Support
+
+If you find this extension useful, consider leaving a rating on the VS Code Marketplace.
