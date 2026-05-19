@@ -31,4 +31,8 @@ src/
 
 ### 1.0.0
 
+<<<<<<< HEAD
 Initial release.
+=======
+Initial release.
+>>>>>>> 43028b49f13d7dc5051d0b21bffd2d79def8ff11
