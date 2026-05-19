@@ -1,58 +1,76 @@
 // @ts-check
-const vscode = require('vscode');
-const fs = require('fs');
-const path = require('path');
+const vscode = require("vscode");
+const fs = require("fs");
+const path = require("path");
 
 /**
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
-    // 1. Command for scanning the open workspace
-    let copyCurrentDisposable = vscode.commands.registerCommand('codebase-hierarchy-copier.copyCurrent', async () => {
-        const workspaceFolders = vscode.workspace.workspaceFolders;
-        if (!workspaceFolders) {
-            vscode.window.showErrorMessage('No active workspace folder open! Use the button below to pick a folder.');
-            return;
-        }
-        handleHierarchyGeneration(workspaceFolders[0].uri.fsPath, workspaceFolders[0].name);
-    });
+  // 1. Command for scanning the open workspace
+  let copyCurrentDisposable = vscode.commands.registerCommand(
+    "codebase-hierarchy-copier.copyCurrent",
+    async () => {
+      const workspaceFolders = vscode.workspace.workspaceFolders;
+      if (!workspaceFolders) {
+        vscode.window.showErrorMessage(
+          "No active workspace folder open! Use the button below to pick a folder.",
+        );
+        return;
+      }
+      handleHierarchyGeneration(
+        workspaceFolders[0].uri.fsPath,
+        workspaceFolders[0].name,
+      );
+    },
+  );
 
-    // 2. Command for scanning a chosen external folder
-    let pickAndCopyDisposable = vscode.commands.registerCommand('codebase-hierarchy-copier.pickAndCopy', async () => {
-        const options = {
-            canSelectMany: false,
-            canSelectFolders: true,
-            canSelectFiles: false,
-            openLabel: 'Select Folder to Copy Hierarchy'
-        };
+  // 2. Command for scanning a chosen external folder
+  let pickAndCopyDisposable = vscode.commands.registerCommand(
+    "codebase-hierarchy-copier.pickAndCopy",
+    async () => {
+      const options = {
+        canSelectMany: false,
+        canSelectFolders: true,
+        canSelectFiles: false,
+        openLabel: "Select Folder to Copy Hierarchy",
+      };
 
-        const folderUri = await vscode.window.showOpenDialog(options);
-        if (folderUri && folderUri[0]) {
-            const targetPath = folderUri[0].fsPath;
-            const targetName = path.basename(targetPath);
-            handleHierarchyGeneration(targetPath, targetName);
-        }
-    });
+      const folderUri = await vscode.window.showOpenDialog(options);
+      if (folderUri && folderUri[0]) {
+        const targetPath = folderUri[0].fsPath;
+        const targetName = path.basename(targetPath);
+        handleHierarchyGeneration(targetPath, targetName);
+      }
+    },
+  );
 
-    context.subscriptions.push(copyCurrentDisposable, pickAndCopyDisposable);
+  context.subscriptions.push(copyCurrentDisposable, pickAndCopyDisposable);
 
-    // 3. Register the interactive Sidebar Panel UI Provider
-    const provider = new SidebarWebviewProvider(context.extensionUri);
-    context.subscriptions.push(
-        vscode.window.registerWebviewViewProvider('hierarchyCopierSidebarView', provider)
-    );
+  // 3. Register the interactive Sidebar Panel UI Provider
+  const provider = new SidebarWebviewProvider(context.extensionUri);
+  context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider(
+      "hierarchyCopierSidebarView",
+      provider,
+    ),
+  );
 }
 
 /**
  * Common orchestration logic
- * @param {string} folderPath 
- * @param {string} folderName 
+ * @param {string} folderPath
+ * @param {string} folderName
  */
 async function handleHierarchyGeneration(folderPath, folderName) {
-    vscode.window.showInformationMessage(`Generating hierarchy for: ${folderName}...`);
-    const hierarchyText = `${folderName}/\n` + generateTree(folderPath);
-    await vscode.env.clipboard.writeText(hierarchyText);
-    vscode.window.showInformationMessage('Codebase hierarchy copied to clipboard! 📋');
+  vscode.window.showInformationMessage(
+    `Generating hierarchy for: ${folderName}...`,
+  );
+  const hierarchyText = `${folderName}/\n` + generateTree(folderPath);
+  await vscode.env.clipboard.writeText(hierarchyText);
+  vscode.window.showInformationMessage(
+    "Codebase hierarchy copied to clipboard! 📋",
+  );
 }
 
 /**
@@ -61,69 +79,146 @@ async function handleHierarchyGeneration(folderPath, folderName) {
  * @param {string} [prefix='']
  * @returns {string}
  */
-function generateTree(dirPath, prefix = '') {
-    let result = '';
-    try {
-        const items = fs.readdirSync(dirPath);
-        // Default ignored files to keep your outputs clean
-        const ignored = ['node_modules', '.git', 'dist', 'out', '.DS_Store', '.vscode'];
-        const filteredItems = items.filter(item => !ignored.includes(item));
+/**
+ * Helper function to recursively map out the folder tree
+ * @param {string} dirPath
+ * @param {string} [prefix='']
+ * @returns {string}
+ */
+function generateTree(dirPath, prefix = "") {
+  let result = "";
 
-        filteredItems.forEach((item, index) => {
-            const isLast = index === filteredItems.length - 1;
-            const itemPath = path.join(dirPath, item);
-            const isDirectory = fs.statSync(itemPath).isDirectory();
+  try {
+    const items = fs.readdirSync(dirPath);
 
-            const marker = isLast ? '└── ' : '├── ';
-            result += `${prefix}${marker}${item}${isDirectory ? '/' : ''}\n`;
+    // Folders that should appear but NOT expand
+    const collapsedFolders = [
+      // Package managers
+      "node_modules",
+      ".pnpm",
+      ".yarn",
 
-            if (isDirectory) {
-                const nextPrefix = prefix + (isLast ? '    ' : '│   ');
-                result += generateTree(itemPath, nextPrefix);
-            }
-        });
-    } catch (error) {
-        result += `${prefix}── (Error reading directory)\n`;
-    }
-    return result;
+      // Framework build outputs
+      ".next",
+      ".nuxt",
+      ".svelte-kit",
+      ".angular",
+      ".expo",
+      ".turbo",
+
+      // Build / distribution
+      "dist",
+      "build",
+      "out",
+      "coverage",
+
+      // Git / IDE
+      ".git",
+      ".github",
+      ".vscode",
+      ".idea",
+
+      // Cache folders
+      ".cache",
+      ".parcel-cache",
+      ".vite",
+      ".vercel",
+
+      // Python
+      "__pycache__",
+      ".venv",
+      "venv",
+
+      // Mobile / native
+      "Pods",
+      ".gradle",
+
+      // Database / deployment
+      ".firebase",
+      ".supabase",
+
+      // Misc
+      "tmp",
+      "temp",
+    ];
+
+    // Files to completely ignore
+    const ignoredFiles = [".DS_Store"];
+
+    const filteredItems = items.filter((item) => !ignoredFiles.includes(item));
+
+    filteredItems.forEach((item, index) => {
+      const isLast = index === filteredItems.length - 1;
+
+      const itemPath = path.join(dirPath, item);
+
+      let isDirectory = false;
+
+      try {
+        isDirectory = fs.statSync(itemPath).isDirectory();
+      } catch {
+        return;
+      }
+
+      const marker = isLast ? "└── " : "├── ";
+
+      const isCollapsed = collapsedFolders.includes(item);
+
+      result += `${prefix}${marker}${item}${isDirectory ? "/" : ""}${isCollapsed ? " (...)" : ""}\n`;
+
+      // Skip recursive expansion for collapsed folders
+      if (isDirectory && !collapsedFolders.includes(item)) {
+        const nextPrefix = prefix + (isLast ? "    " : "│   ");
+        result += generateTree(itemPath, nextPrefix);
+      }
+    });
+  } catch (error) {
+    result += `${prefix}── (Error reading directory)\n`;
+  }
+
+  return result;
 }
 
 /**
  * Class mapping the interactive panel interface inside VS Code's sidebar
  */
 class SidebarWebviewProvider {
-    /**
-     * @param {vscode.Uri} _extensionUri
-     */
-    constructor(_extensionUri) {
-        this._extensionUri = _extensionUri;
-    }
+  /**
+   * @param {vscode.Uri} _extensionUri
+   */
+  constructor(_extensionUri) {
+    this._extensionUri = _extensionUri;
+  }
 
-    /**
-     * @param {vscode.WebviewView} webviewView
-     */
-    resolveWebviewView(webviewView) {
-        webviewView.webview.options = {
-            enableScripts: true
-        };
+  /**
+   * @param {vscode.WebviewView} webviewView
+   */
+  resolveWebviewView(webviewView) {
+    webviewView.webview.options = {
+      enableScripts: true,
+    };
 
-        webviewView.webview.html = this._getHtmlForWebview();
+    webviewView.webview.html = this._getHtmlForWebview();
 
-        // Relay messages back from frontend panel clicks to actual extension commands
-        webviewView.webview.onDidReceiveMessage(message => {
-            switch (message.command) {
-                case 'runCopyCurrent':
-                    vscode.commands.executeCommand('codebase-hierarchy-copier.copyCurrent');
-                    return;
-                case 'runPickAndCopy':
-                    vscode.commands.executeCommand('codebase-hierarchy-copier.pickAndCopy');
-                    return;
-            }
-        });
-    }
+    // Relay messages back from frontend panel clicks to actual extension commands
+    webviewView.webview.onDidReceiveMessage((message) => {
+      switch (message.command) {
+        case "runCopyCurrent":
+          vscode.commands.executeCommand(
+            "codebase-hierarchy-copier.copyCurrent",
+          );
+          return;
+        case "runPickAndCopy":
+          vscode.commands.executeCommand(
+            "codebase-hierarchy-copier.pickAndCopy",
+          );
+          return;
+      }
+    });
+  }
 
-    _getHtmlForWebview() {
-        return `<!DOCTYPE html>
+  _getHtmlForWebview() {
+    return `<!DOCTYPE html>
         <html lang="en">
         <head>
             <meta charset="UTF-8">
@@ -188,7 +283,7 @@ class SidebarWebviewProvider {
             </script>
         </body>
         </html>`;
-    }
+  }
 }
 
 function deactivate() {}
