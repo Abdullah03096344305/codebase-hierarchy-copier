@@ -1,8 +1,6 @@
 # 📁 Codebase Hierarchy Copier
 
 [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://marketplace.visualstudio.com/items?itemName=your-publisher-id.codebase-hierarchy-copier)
-[![VS Code](https://img.shields.io/badge/VS%20Code-1.85.0+-blue.svg)](https://code.visualstudio.com)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 > **Instantly copy your entire codebase folder structure as a clean, readable text tree - perfect for AI context, documentation, or sharing with your team.**
 
