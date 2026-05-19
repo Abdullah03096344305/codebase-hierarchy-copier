@@ -1,0 +1,40 @@
+{
+  "name": "codebase-hierarchy-copier",
+  "displayName": "Codebase Hierarchy Copier",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "main": "./extension.js",
+  "activationEvents": [],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "hierarchy-copier-sidebar",
+          "title": "Hierarchy Copier",
+          "icon": "$(file-submodule)"
+        }
+      ]
+    },
+    "views": {
+      "hierarchy-copier-sidebar": [
+        {
+          "type": "webview",
+          "id": "hierarchyCopierSidebarView",
+          "name": "Actions Panel"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "codebase-hierarchy-copier.copyCurrent",
+        "title": "Copy Current Workspace Hierarchy"
+      },
+      {
+        "command": "codebase-hierarchy-copier.pickAndCopy",
+        "title": "Select Folder and Copy Hierarchy"
+      }
+    ]
+  }
+}
