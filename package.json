@@ -2,6 +2,13 @@
   "name": "codebase-hierarchy-copier",
   "displayName": "Codebase Hierarchy Copier",
   "version": "0.0.1",
+  "publisher": "AbdullahNazirDev",
+  "description": "A VS Code extension to copy the folder hierarchy of the current workspace or a selected folder.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Abdullah03096344305/codebase-hierarchy-copier"
+  },
+  "icon": "icon.png",
   "engines": {
     "vscode": "^1.85.0"
   },
