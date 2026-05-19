@@ -1,65 +1,117 @@
-# codebase-hierarchy-copier README
+# 📁 Codebase Hierarchy Copier
 
-This is the README for your extension "codebase-hierarchy-copier". After writing up a brief description, we recommend including the following sections.
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://marketplace.visualstudio.com/items?itemName=your-publisher-id.codebase-hierarchy-copier)
+[![VS Code](https://img.shields.io/badge/VS%20Code-1.85.0+-blue.svg)](https://code.visualstudio.com)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-## Features
+> **Instantly copy your entire codebase folder structure as a clean, readable text tree - perfect for AI context, documentation, or sharing with your team.**
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+## ✨ Features
 
-For example if there is an image subfolder under your extension project workspace:
+- 🚀 **One-Click Copy** - Generate and copy your entire project hierarchy in seconds
+- 🎯 **Smart Filtering** - Automatically ignores `node_modules`, `.git`, `dist`, and other clutter
+- 🖱️ **Interactive Sidebar** - Dedicated panel with two scanning options
+- 📂 **Flexible Scanning** - Scan current workspace OR pick any folder on your system
+- 🎨 **Beautiful Formatting** - Clean ASCII tree structure with visual hierarchy
+- 🔄 **Real-time Feedback** - Toast notifications for generation and copy status
 
-\!\[feature X\]\(images/feature-x.png\)
+## 📸 Screenshot
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+![Extension Demo](https://via.placeholder.com/800x400?text=Sidebar+Panel+with+Two+Buttons)
 
-## Requirements
+*Sidebar panel showing interactive buttons for instant hierarchy generation*
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+## 🚀 Quick Start
 
-## Extension Settings
+### Installation
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+1. Open **VS Code**
+2. Go to Extensions (`Ctrl+Shift+X` or `Cmd+Shift+X`)
+3. Search for `Codebase Hierarchy Copier`
+4. Click **Install**
 
-For example:
+### Usage
 
-This extension contributes the following settings:
+**Method 1: Sidebar Panel (Recommended)**
+1. Click the folder icon in the activity bar (left sidebar)
+2. Choose either:
+   - **Scan Current Active Workspace** - Uses your currently open folder
+   - **Select & Scan Custom Folder** - Browse and select any folder on your system
+3. The hierarchy is automatically copied to your clipboard! 📋
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+**Method 2: Command Palette**
+- Press `Ctrl+Shift+P` (Windows/Linux) or `Cmd+Shift+P` (Mac)
+- Type `Copy Codebase Hierarchy to Clipboard`
+- Press Enter
 
-## Known Issues
+### Example Output
+my-project/
+├── src/
+│ ├── components/
+│ │ ├── Header.js
+│ │ └── Footer.js
+│ ├── utils/
+│ │ └── helpers.js
+│ └── app.js
+├── package.json
+├── README.md
+└── .gitignore
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
 
-## Release Notes
+## 🎯 Use Cases
 
-Users appreciate release notes as you update your extension.
+- **🤖 AI Context** - Feed your project structure to ChatGPT, Claude, or Gemini
+- **📝 Documentation** - Quickly document your project folder layout
+- **👥 Team Sharing** - Share codebase structure without sharing code
+- **📊 Code Review** - Provide context for code review requests
+- **🎓 Teaching** - Explain project organization to junior developers
+- **🔍 Auditing** - Review and document legacy codebase structures
 
-### 1.0.0
+## ⚙️ Configuration
 
-Initial release of ...
+The extension automatically ignores these common folders:
+- `node_modules/`
+- `.git/`
+- `dist/`
+- `out/`
+- `.DS_Store`
+- `.vscode/`
 
-### 1.0.1
+*Coming soon: Custom ignore patterns via VS Code settings.*
 
-Fixed issue #.
+## ⌨️ Keyboard Shortcuts
 
-### 1.1.0
+No default shortcuts assigned. You can create your own:
 
-Added features X, Y, and Z.
+1. Open Keyboard Shortcuts (`Ctrl+K Ctrl+S`)
+2. Search for `codebase-hierarchy-copier.copyHierarchy`
+3. Add your preferred keybinding
 
----
+## 🛠️ Development
 
-## Working with Markdown
+### Prerequisites
+- Node.js (v14 or higher)
+- VS Code (v1.85.0 or higher)
 
-You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
+### Local Development Setup
 
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets
 
-## For more information
+# Clone the repository
+git clone https://github.com/abdullah030963443055/codebase-hierarchy-copier.git
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+# Navigate to project directory
+cd codebase-hierarchy-copier
 
-**Enjoy!**
+# Install dependencies
+npm install
+
+# Open in VS Code
+code .
+
+# Press F5 to start debugging
+
+# Install vsce globally
+npm install -g @vscode/vsce
+
+# Package the extension
+vsce package
